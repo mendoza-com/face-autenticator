@@ -1,0 +1,137 @@
+service: face-rekognition
+
+# Use the serverless-webpack plugin to transpile ES6
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+# serverless-webpack configuration
+# Enable auto-packing of external modules
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  secrets: ${file(secrets.yml):${opt:stage}}
+  myStage: ${opt:stage}
+  myEnvironment:
+    ENV:
+      prod: "prod"
+      dev:  "dev"
+      test: "test"
+      stage: "stage"
+  custom:
+  bucket: ${self:custom.secrets.BUCKET_NAME}
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: ${opt:stage}  #dev -> local, test y prod -> aws
+  environment:
+    ENV: ${self:custom.myEnvironment.ENV.${self:custom.myStage}}
+    SECRETACCESSKEY: ${self:custom.secrets.SECRETACCESSKEY}
+    ACCESSKEYID: ${self:custom.secrets.ACCESSKEYID}
+  region: us-east-1
+  iamRoleStatements: # permissions for all of your functions can be set here
+  - Effect: Allow
+    Action: # Gives permission to DynamoDB tables
+      - dynamodb:DescribeTable
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+    Resource: "arn:aws:dynamodb:us-east-1:*:*"
+
+resources:
+  Resources:
+    Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.bucket}
+        AccessControl: Private
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders:
+                - "*"
+              AllowedMethods:
+                - GET
+              AllowedOrigins:
+                - "*"
+    LogRekonTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.secrets.LOG_TABLE}
+        AttributeDefinitions:
+          - AttributeName: userId
+            AttributeType: N
+        KeySchema:
+          - AttributeName: userId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits:  2
+          WriteCapacityUnits: 2
+
+functions:
+  photo:
+    handler: photo/photo.add
+    stageVariables: 
+      - stage : ${opt:stage, 'dev'}
+    events:
+      - http:
+          path: photo/add
+          method: post
+          cors: true
+          authorizer: false
+  auth:
+    handler: photo/auth.auth
+    stageVariables: 
+      - stage : ${opt:stage, 'dev'}
+    events:
+      - http:
+          path: auth
+          method: post
+          cors: true
+          authorizer: false
+  video:
+    handler: video/add.add
+    stageVariables: 
+      - stage : ${opt:stage, 'dev'}
+    events:
+      - http:
+          path: video/add
+          method: post
+          cors: true
+          authorizer: false      
+  videoProcess:
+    handler: video/process.process
+    stageVariables: 
+      - stage : ${opt:stage, 'dev'}
+    events:
+      # - sns: arn:aws:sns:us-east-1:794638628124:faces
+      - http:
+          path: video/process
+          method: post
+          cors: true
+          authorizer: false
+  validationStatus:
+    handler: validation/validation.get
+    stageVariables: 
+      - stage : ${opt:stage, 'dev'}
+    events:
+      - http:
+          path: validation
+          method: get
+          cors: true
+          authorizer: false
+  validationUpdate:
+    handler: validation/validation.update
+    stageVariables: 
+      - stage : ${opt:stage, 'dev'}
+    events:
+      - http:
+          path: validation
+          method: post
+          cors: true
+          authorizer: false
+    
+

@@ -1,0 +1,26 @@
+{
+    "event" :{
+        "Records" : [
+            {
+                "Sns" : {
+                    "Message": {
+                        "JobId" : "a6526f47bdadbfa2e57aa32668305c19e27f70fff4348fae1bf5d0e860dcb786"
+                    }
+                }
+            },
+            {
+                "Sns" : {
+                    "Message": {
+                        "JobId" : "177689b4bc48ab7254bbf52e45ee98dbcea27176af4db2308a47a4f59b2bb533"
+                    }
+                }
+            }
+        ]
+    },
+    "image_video" : {
+        "body": {
+            "id":"28",
+            "Key":"videos/28/VID_20180531_173928003.mp4"
+        }
+    }
+}

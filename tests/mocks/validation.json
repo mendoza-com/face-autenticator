@@ -1,0 +1,13 @@
+{
+    "validUser":{
+        "queryStringParameters" : {
+            "userId": "28"
+        }   
+    },
+    "notValidUser": {
+        "queryStringParameters" : {
+            "userId": "1233223"
+        }
+    }
+
+}

@@ -1,0 +1,41 @@
+{
+  "name": "face-rekognition",
+  "version": "1.1.0",
+  "description": "Node JS function for face rekognition",
+  "main": "handler.js",
+  "scripts": {
+    "test_photo": "jest -t 'photo_add'",
+    "test_validation": "jest -t 'validation'",
+    "test_video": "jest -t 'video_test'",
+    "deploy-develop": "serverless deploy -v --stage dev",
+    "deploy-test": "serverless deploy -v --stage test",
+    "deploy-staging": "serverless deploy -v --stage stage",
+    "deploy-prod": "serverless deploy -v --stage prod"
+  },
+  "author": "Juan Ciullini",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mendoza-com/face-rekognition.git"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-source-map-support": "^1.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "jest": "^21.2.1",
+    "serverless-aws-documentation": "^1.1.0",
+    "serverless-offline": "^3.20.3",
+    "serverless-webpack": "^5.1.5",
+    "webpack": "^4.2.0",
+    "webpack-node-externals": "^1.6.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.268.1",
+    "babel-runtime": "^6.26.0",
+    "node-rekognition": "github:TWEEN-SA/node-rekognition#master",
+    "source-map-support": "^0.4.18"
+  }
+}

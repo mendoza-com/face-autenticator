@@ -1,0 +1,14 @@
+{
+    "image_ok" : {
+        "body": {
+            "image" : {
+                "Key":"photos/28/dni.jpg",
+                "id":"28"
+            }
+        }
+    },
+    "image_fail" : {
+        "body_wrong": {
+        }
+    }
+}
