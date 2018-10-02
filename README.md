@@ -20,6 +20,7 @@ A Serverless face rekognition API to be used in order to validate users. Working
 
 ---
 
+
 ### Requirements
 
 - [Install the Serverless Framework](https://serverless.com/framework/docs/providers/aws/guide/installation/)
